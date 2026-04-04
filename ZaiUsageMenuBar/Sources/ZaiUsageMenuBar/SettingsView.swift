@@ -22,7 +22,7 @@ struct SettingsView: View {
                             .font(.caption)
                             .fontWeight(.medium)
                         
-                        Text("https://open.bigmap.cn/api/anthropic")
+                        Text("https://open.bigmodel.cn/api/anthropic")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
