@@ -18,8 +18,21 @@ mkdir -p "$RESOURCES"
 # Copy binary
 cp "$BUILD_DIR/$APP_NAME" "$MACOS/"
 
-# Copy asset catalog
-cp -R "$BUILD_DIR/${APP_NAME}_${APP_NAME}.bundle/Assets.xcassets" "$RESOURCES/"
+# Generate .icns from asset catalog
+ICONSET="$BUILD_DIR/AppIcon.iconset"
+mkdir -p "$ICONSET"
+ASSETS="$BUILD_DIR/${APP_NAME}_${APP_NAME}.bundle/Assets.xcassets/AppIcon.appiconset"
+cp "$ASSETS/icon_16x16.png" "$ICONSET/icon_16x16.png"
+cp "$ASSETS/icon_16x16@2x.png" "$ICONSET/icon_16x16@2x.png"
+cp "$ASSETS/icon_32x32.png" "$ICONSET/icon_32x32.png"
+cp "$ASSETS/icon_32x32@2x.png" "$ICONSET/icon_32x32@2x.png"
+cp "$ASSETS/icon_128x128.png" "$ICONSET/icon_128x128.png"
+cp "$ASSETS/icon_128x128@2x.png" "$ICONSET/icon_128x128@2x.png"
+cp "$ASSETS/icon_256x256.png" "$ICONSET/icon_256x256.png"
+cp "$ASSETS/icon_512x512.png" "$ICONSET/icon_256x256@2x.png"
+cp "$ASSETS/icon_512x512.png" "$ICONSET/icon_512x512.png"
+cp "$ASSETS/icon_512x512@2x.png" "$ICONSET/icon_512x512@2x.png"
+iconutil -c icns "$ICONSET" -o "$RESOURCES/AppIcon.icns"
 
 # Create Info.plist
 cat > "$CONTENTS/Info.plist" << 'PLIST'
@@ -49,7 +62,7 @@ cat > "$CONTENTS/Info.plist" << 'PLIST'
     <string>NSApplication</string>
     <key>NSMainNibFile</key>
     <string></string>
-    <key>CFBundleIconName</key>
+    <key>CFBundleIconFile</key>
     <string>AppIcon</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
