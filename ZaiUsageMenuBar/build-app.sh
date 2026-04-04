@@ -18,6 +18,9 @@ mkdir -p "$RESOURCES"
 # Copy binary
 cp "$BUILD_DIR/$APP_NAME" "$MACOS/"
 
+# Copy asset catalog
+cp -R "$BUILD_DIR/${APP_NAME}_${APP_NAME}.bundle/Assets.xcassets" "$RESOURCES/"
+
 # Create Info.plist
 cat > "$CONTENTS/Info.plist" << 'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -46,6 +49,8 @@ cat > "$CONTENTS/Info.plist" << 'PLIST'
     <string>NSApplication</string>
     <key>NSMainNibFile</key>
     <string></string>
+    <key>CFBundleIconName</key>
+    <string>AppIcon</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
 </dict>
