@@ -1,0 +1,280 @@
+import SwiftUI
+
+struct MenuBarContentView: View {
+    @StateObject private var viewModel = UsageViewModel()
+    @State private var showSettings = false
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            HeaderView(lastUpdated: viewModel.lastUpdated, isLoading: viewModel.isLoading, showSettings: $showSettings)
+            
+            ScrollView {
+                VStack(spacing: 8) {
+                    if let error = viewModel.error {
+                        ErrorView(message: error, retryAction: viewModel.refresh)
+                    }
+                    
+                    if let quotaLimits = viewModel.quotaLimits {
+                        QuotaLimitsView(quotaData: quotaLimits)
+                    }
+                    
+                    if let modelUsage = viewModel.modelUsage {
+                        ModelUsageView(modelData: modelUsage)
+                    }
+                    
+                    if let toolUsage = viewModel.toolUsage {
+                        ToolUsageView(toolData: toolUsage)
+                    }
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                            .frame(maxWidth: .infinity)
+                            .padding(4)
+                    }
+                }
+                .padding(.horizontal, 8)
+                .padding(.bottom, 6)
+            }
+        }
+        .frame(width: 300)
+        .onAppear {
+            viewModel.refresh()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .refreshUsage)) { _ in
+            viewModel.refresh()
+        }
+        .sheet(isPresented: $showSettings) {
+            SettingsView()
+        }
+    }
+}
+
+struct HeaderView: View {
+    let lastUpdated: Date?
+    let isLoading: Bool
+    @Binding var showSettings: Bool
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Text("Zai Usage")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+            
+            Spacer()
+            
+            if isLoading {
+                ProgressView()
+                    .scaleEffect(0.6)
+            }
+            
+            if let lastUpdated = lastUpdated {
+                Text(lastUpdated, style: .time)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            
+            Button {
+                showSettings = true
+            } label: {
+                Image(systemName: "gearshape")
+                    .font(.system(size: 12))
+            }
+            .buttonStyle(.plain)
+            .help("Settings")
+            
+            Button {
+                NSApp.terminate(nil)
+            } label: {
+                Image(systemName: "xmark.circle")
+                    .font(.system(size: 12))
+            }
+            .buttonStyle(.plain)
+            .help("Quit")
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+    }
+}
+
+struct ErrorView: View {
+    let message: String
+    let retryAction: () -> Void
+    
+    var body: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "exclamationmark.triangle")
+                .foregroundColor(.red)
+            Text(message)
+                .font(.caption2)
+                .foregroundColor(.secondary)
+                .lineLimit(2)
+            Spacer()
+            Button("Retry", action: retryAction)
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+        }
+        .padding(6)
+        .background(Color.red.opacity(0.1))
+        .cornerRadius(6)
+    }
+}
+
+struct QuotaLimitsView: View {
+    let quotaData: QuotaLimitData
+    
+    var tokenLimit: QuotaLimit? {
+        quotaData.limits.first { $0.type == "TOKENS_LIMIT" }
+    }
+    
+    var timeLimit: QuotaLimit? {
+        quotaData.limits.first { $0.type == "TIME_LIMIT" }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text("Quota")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(quotaData.level.uppercased())
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 1)
+                    .background(Color.secondary.opacity(0.15))
+                    .cornerRadius(3)
+            }
+            
+            if let tokenLimit = tokenLimit {
+                QuotaLimitRow(limit: tokenLimit, label: "Token (5h)")
+            }
+            
+            if let timeLimit = timeLimit {
+                QuotaLimitRow(limit: timeLimit, label: "MCP (1m)")
+            }
+        }
+        .padding(8)
+        .background(Color(NSColor.controlBackgroundColor))
+        .cornerRadius(6)
+    }
+}
+
+struct QuotaLimitRow: View {
+    let limit: QuotaLimit
+    let label: String
+    
+    var resetDate: Date {
+        Date(timeIntervalSince1970: limit.nextResetTime / 1000)
+    }
+    
+    var progressColor: Color {
+        if limit.percentage >= 90 { return .red }
+        else if limit.percentage >= 70 { return .orange }
+        else { return .green }
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            HStack {
+                Text(label)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                if let current = limit.currentValue, let usage = limit.usage {
+                    Text(String(format: "%.0f/%.0f", current, usage))
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                }
+                
+                Text(String(format: "%.0f%%", limit.percentage))
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(progressColor)
+            }
+            
+            ProgressView(value: min(limit.percentage, 100), total: 100)
+                .progressViewStyle(LinearProgressViewStyle(tint: progressColor))
+                .frame(height: 3)
+            
+            HStack {
+                Spacer()
+                Image(systemName: "clock")
+                    .font(.caption2)
+                Text("resets \(resetDate, style: .relative)")
+                    .font(.caption2)
+            }
+            .foregroundColor(Color.secondary)
+        }
+    }
+}
+
+struct ModelUsageView: View {
+    let modelData: ModelUsageData
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Model Usage")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                Spacer()
+                Text(formatTokens(modelData.totalUsage.totalTokensUsage))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            
+            HStack(spacing: 12) {
+                Label("\(modelData.totalUsage.totalModelCallCount)", systemImage: "bubble.left")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(8)
+        .background(Color(NSColor.controlBackgroundColor))
+        .cornerRadius(6)
+    }
+    
+    func formatTokens(_ count: Int) -> String {
+        if count >= 1_000_000 { return String(format: "%.1fM", Double(count) / 1_000_000) }
+        else if count >= 1_000 { return String(format: "%.1fK", Double(count) / 1_000) }
+        return "\(count)"
+    }
+}
+
+struct ToolUsageView: View {
+    let toolData: ToolUsageData
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text("Tools")
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                Spacer()
+                Text("\(toolData.totalUsage.totalSearchMcpCount) calls")
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            
+            if !toolData.totalUsage.toolDetails.isEmpty {
+                ForEach(toolData.totalUsage.toolDetails, id: \.modelName) { detail in
+                    HStack {
+                        Text(detail.modelName)
+                            .font(.caption2)
+                        Spacer()
+                        Text("\(detail.totalUsageCount)")
+                            .font(.caption2)
+                            .fontWeight(.medium)
+                    }
+                }
+            }
+        }
+        .padding(8)
+        .background(Color(NSColor.controlBackgroundColor))
+        .cornerRadius(6)
+    }
+}
