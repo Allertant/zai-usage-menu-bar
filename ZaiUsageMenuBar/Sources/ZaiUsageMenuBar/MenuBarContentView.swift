@@ -337,7 +337,17 @@ private struct QuotaBarRow: View {
             if let resetDate = resetDate {
                 HStack {
                     Spacer()
-                    Text("\(L10n.localized("resets_prefix")) \(resetDate, style: .relative)")
+                    Text(String(format: L10n.localized("resets_format"), {
+                        let interval = max(0, resetDate.timeIntervalSinceNow)
+                        let days = Int(interval) / 86400
+                        let hours = Int(interval) % 86400 / 3600
+                        let minutes = Int(interval) % 3600 / 60
+                        var parts: [String] = []
+                        if days > 0 { parts.append("\(days)d") }
+                        if hours > 0 { parts.append("\(hours)h") }
+                        parts.append("\(minutes)m")
+                        return parts.joined(separator: " ")
+                    }()))
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(.primary.opacity(0.85))
                 }

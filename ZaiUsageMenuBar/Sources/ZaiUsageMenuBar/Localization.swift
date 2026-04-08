@@ -8,7 +8,7 @@ enum L10n {
     private static let translations: [String: [String: String]] = [
         "app_title": [
             "en": "Zai Usage",
-            "zh": "智谱coding plan 用量查询",
+            "zh": "智谱 coding plan 用量",
         ],
         "settings": [
             "en": "Settings",
@@ -42,9 +42,9 @@ enum L10n {
             "en": "MCP (1m)",
             "zh": "MCP (1个月)",
         ],
-        "resets_prefix": [
-            "en": "resets",
-            "zh": "重置",
+        "resets_format": [
+            "en": "resets %@",
+            "zh": "%@ 后重置",
         ],
         "model_usage": [
             "en": "Model Usage",
