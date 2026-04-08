@@ -1,4 +1,5 @@
 import Foundation
+import LocalAuthentication
 import Security
 
 protocol AuthTokenStore {
@@ -163,7 +164,9 @@ private struct KeychainAuthTokenStore: AuthTokenStore {
         var query = baseQuery(for: accountID)
         query[kSecReturnData as String] = true
         query[kSecMatchLimit as String] = kSecMatchLimitOne
-        query[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
+        let context = LAContext()
+        context.interactionNotAllowed = true
+        query[kSecUseAuthenticationContext as String] = context
 
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)

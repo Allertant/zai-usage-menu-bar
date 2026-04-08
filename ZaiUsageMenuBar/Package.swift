@@ -12,6 +12,9 @@ let package = Package(
             path: "Sources/ZaiUsageMenuBar",
             resources: [
                 .process("Assets.xcassets")
+            ],
+            linkerSettings: [
+                .linkedFramework("LocalAuthentication")
             ]
         ),
         .testTarget(
