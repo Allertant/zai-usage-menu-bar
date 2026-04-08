@@ -113,6 +113,11 @@ struct AccountConfig: Codable, Identifiable, Hashable {
 enum HourlyRange {
     case today(referenceDate: Date)
     case last24h
+
+    var isToday: Bool {
+        if case .today = self { return true }
+        return false
+    }
 }
 
 struct HourlyBar {
