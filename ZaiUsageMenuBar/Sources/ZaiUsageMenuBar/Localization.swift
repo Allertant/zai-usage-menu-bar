@@ -154,6 +154,10 @@ enum L10n {
             "en": "Today",
             "zh": "今天",
         ],
+        "last_24h": [
+            "en": "Last 24h",
+            "zh": "近24小时",
+        ],
     ]
 
     static func localized(_ key: String) -> String {

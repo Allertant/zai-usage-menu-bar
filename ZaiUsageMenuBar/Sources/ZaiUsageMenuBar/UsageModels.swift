@@ -126,6 +126,49 @@ struct HourlyBar {
     var totalTokens: Int { segments.reduce(0) { $0 + $1.tokens } }
 }
 
+struct RangeStats {
+    let modelCalls: Int?
+    let tokens: Int?
+
+    static func from(modelData: ModelUsageData, range: HourlyRange) -> RangeStats {
+        guard let xTime = modelData.xTime, !xTime.isEmpty else {
+            return RangeStats(modelCalls: nil, tokens: nil)
+        }
+
+        let calendar = Calendar.current
+        let referenceDate: Date
+        switch range {
+        case .today(let ref): referenceDate = ref
+        case .last24h: referenceDate = Date()
+        }
+
+        let todayStart = calendar.startOfDay(for: referenceDate)
+
+        var modelCalls = 0
+        var tokens = 0
+
+        for (index, timeString) in xTime.enumerated() {
+            guard let hourDate = HourlyBars.parseHourDate(timeString) else { continue }
+
+            if case .today = range {
+                if hourDate < todayStart { continue }
+            }
+
+            if let counts = modelData.modelCallCount, index < counts.count, let c = counts[index] {
+                modelCalls += c
+            }
+            if let usage = modelData.tokensUsage, index < usage.count, let t = usage[index] {
+                tokens += t
+            }
+        }
+
+        return RangeStats(
+            modelCalls: modelCalls > 0 ? modelCalls : nil,
+            tokens: tokens > 0 ? tokens : nil
+        )
+    }
+}
+
 enum HourlyBars {
     static func from(modelData: ModelUsageData, range: HourlyRange) -> [HourlyBar] {
         guard let xTime = modelData.xTime, !xTime.isEmpty,
@@ -168,7 +211,7 @@ enum HourlyBars {
         return bars
     }
 
-    private static func parseHourDate(_ string: String) -> Date? {
+    static func parseHourDate(_ string: String) -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
         formatter.locale = Locale(identifier: "en_US_POSIX")

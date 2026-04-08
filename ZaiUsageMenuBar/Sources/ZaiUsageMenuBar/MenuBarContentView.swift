@@ -261,7 +261,7 @@ struct AccountSectionView: View {
                             )
                         }
                         if usage.modelUsage.totalUsage != nil || usage.toolUsage.totalUsage != nil {
-                            StatsSectionView(usage: usage, accentColor: accentColor)
+                            StatsSectionView(usage: usage, accentColor: accentColor, range: hourlyRange)
                         }
                     } else if let error = result.error {
                         Text(error)
@@ -351,6 +351,7 @@ private struct QuotaBarRow: View {
 struct StatsSectionView: View {
     let usage: UsageData
     let accentColor: Color
+    var range: HourlyRange = .last24h
 
     var body: some View {
         VStack(spacing: 0) {
@@ -359,9 +360,19 @@ struct StatsSectionView: View {
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
 
+            // Time frame label
+            HStack {
+                Spacer()
+                Text(range.isToday ? L10n.localized("today") : L10n.localized("last_24h"))
+                    .font(.system(size: 8))
+                    .foregroundColor(.primary.opacity(0.25))
+            }
+            .padding(.horizontal, 10)
+
             // Main stats row
             HStack(spacing: 0) {
-                if let calls = usage.modelUsage.totalUsage?.totalModelCallCount {
+                let rangeStats = RangeStats.from(modelData: usage.modelUsage, range: range)
+                if let calls = rangeStats.modelCalls {
                     StatColumn(value: "\(calls)", label: "Model Calls")
                     Spacer()
                 }
@@ -369,7 +380,7 @@ struct StatsSectionView: View {
                     StatColumn(value: "\(totalTools)", label: "Tool Calls")
                     Spacer()
                 }
-                if let tokens = usage.modelUsage.totalUsage?.totalTokensUsage {
+                if let tokens = rangeStats.tokens {
                     StatColumn(value: formatTokenCount(tokens), label: "Tokens")
                 }
             }
