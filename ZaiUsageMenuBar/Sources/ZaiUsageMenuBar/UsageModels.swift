@@ -131,40 +131,43 @@ struct RangeStats {
     let tokens: Int?
 
     static func from(modelData: ModelUsageData, range: HourlyRange) -> RangeStats {
-        guard let xTime = modelData.xTime, !xTime.isEmpty else {
-            return RangeStats(modelCalls: nil, tokens: nil)
-        }
-
         let calendar = Calendar.current
-        let referenceDate: Date
+        let now = Date()
+
+        // Determine the cutoff for the selected range
+        let cutoff: Date
         switch range {
-        case .today(let ref): referenceDate = ref
-        case .last24h: referenceDate = Date()
+        case .today(let ref):
+            cutoff = calendar.startOfDay(for: ref)
+        case .last24h:
+            cutoff = calendar.date(byAdding: .hour, value: -24, to: now) ?? now
         }
 
-        let todayStart = calendar.startOfDay(for: referenceDate)
+        // If hourly data is available, sum only the buckets within the range
+        if let xTime = modelData.xTime, !xTime.isEmpty {
+            var modelCalls = 0
+            var tokens = 0
 
-        var modelCalls = 0
-        var tokens = 0
-
-        for (index, timeString) in xTime.enumerated() {
-            guard let hourDate = HourlyBars.parseHourDate(timeString) else { continue }
-
-            if case .today = range {
-                if hourDate < todayStart { continue }
+            for (index, timeString) in xTime.enumerated() {
+                guard let hourDate = HourlyBars.parseHourDate(timeString), hourDate >= cutoff else { continue }
+                if let counts = modelData.modelCallCount, index < counts.count, let c = counts[index] {
+                    modelCalls += c
+                }
+                if let usage = modelData.tokensUsage, index < usage.count, let t = usage[index] {
+                    tokens += t
+                }
             }
 
-            if let counts = modelData.modelCallCount, index < counts.count, let c = counts[index] {
-                modelCalls += c
-            }
-            if let usage = modelData.tokensUsage, index < usage.count, let t = usage[index] {
-                tokens += t
-            }
+            return RangeStats(
+                modelCalls: modelCalls > 0 ? modelCalls : nil,
+                tokens: tokens > 0 ? tokens : nil
+            )
         }
 
+        // Fallback to aggregate totals when hourly buckets are missing
         return RangeStats(
-            modelCalls: modelCalls > 0 ? modelCalls : nil,
-            tokens: tokens > 0 ? tokens : nil
+            modelCalls: modelData.totalUsage?.totalModelCallCount,
+            tokens: modelData.totalUsage?.totalTokensUsage
         )
     }
 }

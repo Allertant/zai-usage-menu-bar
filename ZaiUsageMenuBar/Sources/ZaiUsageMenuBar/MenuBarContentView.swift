@@ -260,7 +260,7 @@ struct AccountSectionView: View {
                                 onRangeChange: { hourlyRange = $0 }
                             )
                         }
-                        if usage.modelUsage.totalUsage != nil || usage.toolUsage.totalUsage != nil {
+                        if usage.modelUsage.totalUsage != nil || usage.toolUsage.totalUsage?.toolDetails != nil {
                             StatsSectionView(usage: usage, accentColor: accentColor, range: hourlyRange)
                         }
                     } else if let error = result.error {
@@ -379,15 +379,11 @@ struct StatsSectionView: View {
             }
             .padding(.horizontal, 10)
 
-            // Main stats row
+            // Main stats row — only range-filtered metrics
             HStack(spacing: 0) {
                 let rangeStats = RangeStats.from(modelData: usage.modelUsage, range: range)
                 if let calls = rangeStats.modelCalls {
                     StatColumn(value: "\(calls)", label: "Model Calls")
-                    Spacer()
-                }
-                if let totalTools = usage.toolUsage.totalUsage?.totalSearchMcpCount {
-                    StatColumn(value: "\(totalTools)", label: "Tool Calls")
                     Spacer()
                 }
                 if let tokens = rangeStats.tokens {
