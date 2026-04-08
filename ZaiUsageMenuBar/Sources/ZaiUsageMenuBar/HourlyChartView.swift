@@ -45,33 +45,30 @@ struct HourlyChartView: View {
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.vertical, 16)
                     } else {
-                        // Bar chart with tooltip overlay
-                        ZStack(alignment: .bottomLeading) {
-                            GeometryReader { geometry in
-                                let barWidth = max((geometry.size.width - barGap * CGFloat(max(bars.count - 1, 0))) / CGFloat(bars.count), 2)
-                                HStack(alignment: .bottom, spacing: barGap) {
-                                    ForEach(Array(bars.enumerated()), id: \.offset) { index, bar in
-                                        VStack(spacing: 0) {
-                                            Spacer(minLength: 0)
-                                            barStack(bar: bar, barWidth: barWidth)
-                                        }
-                                        .frame(width: barWidth, height: barHeight)
-                                        .contentShape(Rectangle())
-                                        .onHover { hovering in
-                                            hoveredBarIndex = hovering ? index : nil
+                        // Bar chart with per-bar tooltip
+                        GeometryReader { geometry in
+                            let barWidth = max((geometry.size.width - barGap * CGFloat(max(bars.count - 1, 0))) / CGFloat(bars.count), 2)
+                            HStack(alignment: .bottom, spacing: barGap) {
+                                ForEach(Array(bars.enumerated()), id: \.offset) { index, bar in
+                                    VStack(spacing: 0) {
+                                        Spacer(minLength: 0)
+                                        barStack(bar: bar, barWidth: barWidth)
+                                    }
+                                    .frame(width: barWidth, height: barHeight)
+                                    .contentShape(Rectangle())
+                                    .onHover { hovering in
+                                        hoveredBarIndex = hovering ? index : nil
+                                    }
+                                    .overlay(alignment: .bottom) {
+                                        if hoveredBarIndex == index {
+                                            tooltipOverlay(bar: bar)
                                         }
                                     }
                                 }
-                                .frame(height: barHeight)
                             }
                             .frame(height: barHeight)
-
-                            // Tooltip
-                            if let hoveredIndex = hoveredBarIndex, hoveredIndex < bars.count {
-                                let bar = bars[hoveredIndex]
-                                tooltipOverlay(bar: bar)
-                            }
                         }
+                        .frame(height: barHeight)
 
                         // Legend
                         legend

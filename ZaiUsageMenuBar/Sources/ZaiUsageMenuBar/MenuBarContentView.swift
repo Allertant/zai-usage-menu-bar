@@ -338,10 +338,10 @@ private struct QuotaBarRow: View {
                 HStack {
                     Spacer()
                     Text("\(L10n.localized("resets_prefix")) \(resetDate, style: .relative)")
-                        .font(.system(size: 8))
-                        .foregroundColor(.secondary.opacity(0.4))
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.secondary.opacity(0.65))
                 }
-                .padding(.top, 1)
+                .padding(.top, 2)
             }
         }
         .padding(.bottom, 4)
