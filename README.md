@@ -71,3 +71,7 @@ The app connects to `https://open.bigmodel.cn/api/monitor/usage/*` endpoints usi
 ## License
 
 MIT
+
+## 友情链接
+
+- [Linux Do 社区](https://linux.do/)  
