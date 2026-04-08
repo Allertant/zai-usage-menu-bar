@@ -178,7 +178,7 @@ struct TokenRingView: View {
                 .stroke(color, style: StrokeStyle(lineWidth: 2, lineCap: .round))
                 .rotationEffect(.degrees(-90))
             Text(String(format: "%.0f", percentage))
-                .font(.system(size: size * 0.3, weight: .bold))
+                .font(.system(size: size * 0.38, weight: .bold))
                 .foregroundColor(color)
         }
         .frame(width: size, height: size)
@@ -204,21 +204,21 @@ struct AccountSectionView: View {
             Button(action: onToggle) {
                 HStack(spacing: 6) {
                     Image(systemName: isExpanded ? "chevron.down" : "chevron.right")
-                        .font(.system(size: 9))
+                        .font(.system(size: 10))
                         .foregroundColor(.secondary)
-                        .frame(width: 10)
+                        .frame(width: 12)
 
                     Text(result.account.displayName)
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(.primary.opacity(0.85))
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.primary)
 
                     if let level = result.usage?.quotaLimits.level {
                         Text(level.uppercased())
-                            .font(.system(size: 8))
-                            .foregroundColor(.secondary.opacity(0.6))
+                            .font(.system(size: 9))
+                            .foregroundColor(.secondary)
                             .padding(.horizontal, 4)
                             .padding(.vertical, 1)
-                            .background(Color.secondary.opacity(0.1))
+                            .background(Color.secondary.opacity(0.2))
                             .cornerRadius(3)
                     }
 
@@ -249,7 +249,7 @@ struct AccountSectionView: View {
                             let modelNames = modelData.compactMap { $0.modelName }
 
                             Divider()
-                                .background(Color.primary.opacity(0.05))
+                                .background(Color.primary.opacity(0.08))
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 4)
 
@@ -274,7 +274,7 @@ struct AccountSectionView: View {
                 }
             }
         }
-        .background(Color.primary.opacity(0.05))
+        .background(Color.primary.opacity(0.08))
         .cornerRadius(10)
     }
 }
@@ -318,13 +318,13 @@ private struct QuotaBarRow: View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
-                    .font(.system(size: 9))
-                    .foregroundColor(.secondary.opacity(0.7))
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
                 Spacer()
                 if let current = limit.currentValue, let usage = limit.usage {
                     Text(String(format: "%.0f/%.0f", current, usage))
-                        .font(.system(size: 9))
-                        .foregroundColor(.secondary.opacity(0.5))
+                        .font(.system(size: 10))
+                        .foregroundColor(.secondary)
                 }
             }
 
@@ -339,7 +339,7 @@ private struct QuotaBarRow: View {
                     Spacer()
                     Text("\(L10n.localized("resets_prefix")) \(resetDate, style: .relative)")
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(.secondary.opacity(0.65))
+                        .foregroundColor(.primary.opacity(0.85))
                 }
                 .padding(.top, 2)
             }
@@ -356,7 +356,7 @@ struct StatsSectionView: View {
     var body: some View {
         VStack(spacing: 0) {
             Divider()
-                .background(Color.primary.opacity(0.05))
+                .background(Color.primary.opacity(0.08))
                 .padding(.horizontal, 10)
                 .padding(.vertical, 4)
 
@@ -364,8 +364,8 @@ struct StatsSectionView: View {
             HStack {
                 Spacer()
                 Text(range.isToday ? L10n.localized("today") : L10n.localized("last_24h"))
-                    .font(.system(size: 8))
-                    .foregroundColor(.primary.opacity(0.25))
+                    .font(.system(size: 9))
+                    .foregroundColor(.secondary)
             }
             .padding(.horizontal, 10)
 
@@ -393,13 +393,13 @@ struct StatsSectionView: View {
                     ForEach(details, id: \.self) { detail in
                         HStack {
                             Text(detail.modelName ?? "")
-                                .font(.system(size: 9))
-                                .foregroundColor(.primary.opacity(0.35))
+                                .font(.system(size: 10))
+                                .foregroundColor(.secondary)
                             Spacer()
                             Text("\(detail.totalUsageCount ?? 0)")
-                                .font(.system(size: 9))
+                                .font(.system(size: 10))
                                 .fontWeight(.medium)
-                                .foregroundColor(.primary.opacity(0.45))
+                                .foregroundColor(.primary.opacity(0.75))
                         }
                     }
                 }
@@ -418,10 +418,10 @@ private struct StatColumn: View {
         VStack(alignment: .leading, spacing: 1) {
             Text(value)
                 .font(.system(size: 15, weight: .bold))
-                .foregroundColor(.primary.opacity(0.9))
+                .foregroundColor(.primary)
             Text(label)
-                .font(.system(size: 8))
-                .foregroundColor(.primary.opacity(0.3))
+                .font(.system(size: 9))
+                .foregroundColor(.secondary)
         }
     }
 }

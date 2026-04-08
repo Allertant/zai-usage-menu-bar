@@ -26,8 +26,8 @@ struct HourlyChartView: View {
                 .buttonStyle(.plain)
 
                 Text(L10n.localized("hourly_tokens"))
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(.primary.opacity(0.7))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.primary)
 
                 Spacer()
 
@@ -40,8 +40,8 @@ struct HourlyChartView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     if bars.isEmpty {
                         Text(L10n.localized("no_data"))
-                            .font(.system(size: 9))
-                            .foregroundColor(.secondary.opacity(0.5))
+                            .font(.system(size: 10))
+                            .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                             .padding(.vertical, 16)
                     } else {
@@ -120,31 +120,31 @@ struct HourlyChartView: View {
     private func tooltipOverlay(bar: HourlyBar) -> some View {
         VStack(alignment: .leading, spacing: 1) {
             Text(bar.label + ":00")
-                .font(.system(size: 8, weight: .semibold))
-                .foregroundColor(.primary.opacity(0.8))
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundColor(.primary)
             ForEach(Array(bar.segments.enumerated()), id: \.offset) { _, segment in
                 HStack(spacing: 3) {
                     Circle()
                         .fill(colorForModel(segment.model))
-                        .frame(width: 4, height: 4)
+                        .frame(width: 5, height: 5)
                     Text(segment.model)
-                        .font(.system(size: 7))
-                        .foregroundColor(.secondary)
+                        .font(.system(size: 9))
+                        .foregroundColor(.primary)
                         .lineLimit(1)
                         .layoutPriority(1)
                     Text(formatTokenCount(segment.tokens))
-                        .font(.system(size: 7, weight: .medium))
-                        .foregroundColor(.primary.opacity(0.8))
+                        .font(.system(size: 9, weight: .medium))
+                        .foregroundColor(.primary)
                 }
             }
             Divider()
-                .background(Color.primary.opacity(0.1))
+                .background(Color.primary.opacity(0.15))
             Text(formatTokenCount(bar.totalTokens))
-                .font(.system(size: 8, weight: .bold))
-                .foregroundColor(.primary.opacity(0.9))
+                .font(.system(size: 10, weight: .bold))
+                .foregroundColor(.primary)
         }
-        .padding(5)
-        .frame(minWidth: 80, maxWidth: 120)
+        .padding(6)
+        .frame(minWidth: 90, maxWidth: 140)
         .background(Color(nsColor: .controlBackgroundColor).opacity(0.95))
         .background(.ultraThinMaterial)
         .cornerRadius(6)
@@ -159,10 +159,10 @@ struct HourlyChartView: View {
                     HStack(spacing: 2) {
                         Circle()
                             .fill(colorForModel(name))
-                            .frame(width: 5, height: 5)
+                            .frame(width: 6, height: 6)
                         Text(name)
-                            .font(.system(size: 7))
-                            .foregroundColor(.secondary.opacity(0.7))
+                            .font(.system(size: 9))
+                            .foregroundColor(.secondary)
                             .lineLimit(1)
                     }
                 }
@@ -175,8 +175,8 @@ struct HourlyChartView: View {
             ForEach(Array(labelIndices.enumerated()), id: \.offset) { _, index in
                 if let bar = bars[safe: index] {
                     Text(bar.label)
-                        .font(.system(size: 7))
-                        .foregroundColor(.secondary.opacity(0.5))
+                        .font(.system(size: 9))
+                        .foregroundColor(.secondary)
                         .frame(maxWidth: .infinity)
                 }
             }
