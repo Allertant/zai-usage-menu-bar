@@ -12,18 +12,37 @@ struct ModelUsageData: Codable {
     let modelCallCount: [Int?]?
     let tokensUsage: [Int?]?
     let totalUsage: ModelUsageTotal?
-    
+    let modelDataList: [ModelDataItem]?
+    let modelSummaryList: [ModelSummaryItem]?
+    let granularity: String?
+
     enum CodingKeys: String, CodingKey {
         case xTime = "x_time"
         case modelCallCount
         case tokensUsage
         case totalUsage
+        case modelDataList
+        case modelSummaryList
+        case granularity
     }
 }
 
 struct ModelUsageTotal: Codable {
     let totalModelCallCount: Int?
     let totalTokensUsage: Int?
+}
+
+struct ModelDataItem: Codable {
+    let modelName: String?
+    let sortOrder: Int?
+    let tokensUsage: [Int?]?
+    let totalTokens: Int?
+}
+
+struct ModelSummaryItem: Codable {
+    let modelName: String?
+    let totalTokens: Int?
+    let sortOrder: Int?
 }
 
 struct ToolUsageData: Codable {
