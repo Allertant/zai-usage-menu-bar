@@ -29,6 +29,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NotificationCenter.default.post(name: .refreshUsage, object: nil)
         }
         RunLoop.main.add(refreshTimer!, forMode: .common)
+
+        fetchAndUpdateStatusItem()
+    }
+
+    private func fetchAndUpdateStatusItem() {
+        let accounts = AccountConfigStore.loadAccounts()
+        let enabledAccounts = accounts.filter { $0.isEnabled && !$0.authToken.trimmed.isEmpty }
+        guard !enabledAccounts.isEmpty else { return }
+
+        Task { @MainActor in
+            let results = await UsageAPIClient.shared.fetchAllUsage(accounts: enabledAccounts)
+            let first = results.first { $0.usage != nil }
+            updateStatusItem(percentage: UsageAggregation.tokenPercentage(from: first?.usage?.quotaLimits))
+        }
     }
     
     func updateStatusItem(percentage: Double?) {
