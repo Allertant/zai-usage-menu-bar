@@ -15,7 +15,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if let button = statusItem.button {
             button.title = "--"
-            button.action = #selector(togglePopover(_:))
+            button.action = #selector(statusBarClicked(_:))
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
         
         let contentView = MenuBarContentView()
@@ -39,6 +40,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    @objc func statusBarClicked(_ sender: NSStatusBarButton) {
+        guard let event = NSApp.currentEvent else { return }
+
+        if event.type == .rightMouseUp {
+            let menu = NSMenu()
+            menu.addItem(NSMenuItem(title: "Quit", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q"))
+            menu.popUp(positioning: nil, at: NSPoint(x: 0, y: 0), in: sender)
+        } else {
+            togglePopover(sender)
+        }
+    }
+
     @objc func togglePopover(_ sender: AnyObject?) {
         if popover.isShown {
             hidePopover(sender)
