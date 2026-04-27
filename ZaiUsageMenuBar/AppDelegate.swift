@@ -19,7 +19,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
         
-        let contentView = MenuBarContentView()
+        let contentView = MenuBarContentView().preferredColorScheme(.dark)
         popover.contentSize = NSSize(width: 300, height: 360)
         popover.behavior = .transient
         popover.appearance = NSAppearance(named: .darkAqua)
