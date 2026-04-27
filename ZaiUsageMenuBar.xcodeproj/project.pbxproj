@@ -1,0 +1,465 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0BFC0C5640F3EFD27F3414BD /* AccountConfigStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B1415371CDF1B37906171D /* AccountConfigStoreTests.swift */; };
+		0FF1B5FAABD21B8B4D17D001 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B97028A2A29CA389E035E9 /* Localization.swift */; };
+		214304F125148B59AE787A52 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EF86A56075F239EC3D81011 /* MenuBarContentView.swift */; };
+		2E1FB48E047F6907533A3C1E /* HourlyChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7196709FA2CA397599C50F9E /* HourlyChartView.swift */; };
+		5367BAC22FC6343B00884A84 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7F3B253C9795AEA4427EAAF /* UsageViewModel.swift */; };
+		6F51626A4C5DA149971127E7 /* ZaiUsageMenuBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9180429072D92C04B11D639 /* ZaiUsageMenuBarApp.swift */; };
+		72BCECE85954DBFAAEFCE997 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05D2526DE175D1D021E8BDF0 /* SettingsView.swift */; };
+		8317D1CCF23F1B8461680E5D /* UsageAggregationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41617C080EB0C238B0FAF8A5 /* UsageAggregationTests.swift */; };
+		925D3D2AB24FAF4A9CB2F46E /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6578EA9871F4EB31C9DC3268 /* UsageModels.swift */; };
+		93A6BA8912B4EEEA381113C4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3455EDE6EC662EF30DAA0F7B /* StringExtensions.swift */; };
+		98C1A24BCB60F333A09E1E52 /* UsageModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 859E149A5304C1C8E1DA0BF8 /* UsageModelsTests.swift */; };
+		A65EA904B79A2C2F876E4146 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E14D48C275CF5C5738EF12F /* Assets.xcassets */; };
+		CA3C8EAC7FDF7B37387B61DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6A6A833A382B064D044A76 /* AppDelegate.swift */; };
+		DC47215743E867E9B46BE1F9 /* AccountConfigStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC237BFDCFDA066208E3E57B /* AccountConfigStore.swift */; };
+		E1BFD5B964AA1E95450B1C8B /* UsageAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772586C3F9F56E837C14D4A6 /* UsageAggregation.swift */; };
+		FC41F930966151D190A2F138 /* UsageAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373CAA735B2CA6EFD960B1B2 /* UsageAPIClient.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		37F9AEBCE1CAF8AD78DF35A4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5421850EE7CA2614B60BA16C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A10033302B55F9EE776E09A;
+			remoteInfo = ZaiUsageMenuBar;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		05D2526DE175D1D021E8BDF0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		0E14D48C275CF5C5738EF12F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0EF86A56075F239EC3D81011 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
+		3455EDE6EC662EF30DAA0F7B /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
+		373CAA735B2CA6EFD960B1B2 /* UsageAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAPIClient.swift; sourceTree = "<group>"; };
+		41617C080EB0C238B0FAF8A5 /* UsageAggregationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAggregationTests.swift; sourceTree = "<group>"; };
+		5DEFAE12BC339A125D047943 /* ZaiUsageMenuBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZaiUsageMenuBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		63B1415371CDF1B37906171D /* AccountConfigStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfigStoreTests.swift; sourceTree = "<group>"; };
+		6578EA9871F4EB31C9DC3268 /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
+		6B6A6A833A382B064D044A76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7196709FA2CA397599C50F9E /* HourlyChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyChartView.swift; sourceTree = "<group>"; };
+		71B97028A2A29CA389E035E9 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
+		772586C3F9F56E837C14D4A6 /* UsageAggregation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAggregation.swift; sourceTree = "<group>"; };
+		859E149A5304C1C8E1DA0BF8 /* UsageModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModelsTests.swift; sourceTree = "<group>"; };
+		AC237BFDCFDA066208E3E57B /* AccountConfigStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountConfigStore.swift; sourceTree = "<group>"; };
+		C6B55983D9B6417AC81C5430 /* ZaiUsageMenuBar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ZaiUsageMenuBar.entitlements; sourceTree = "<group>"; };
+		D9180429072D92C04B11D639 /* ZaiUsageMenuBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZaiUsageMenuBarApp.swift; sourceTree = "<group>"; };
+		DBCF8803EAFA21DE385B7810 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E7F3B253C9795AEA4427EAAF /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
+		F0F7380FC8A5A928C2A0F63F /* ZaiUsageMenuBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZaiUsageMenuBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		23D50946E9B6AD3364D8ACFF /* ZaiUsageMenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				AC237BFDCFDA066208E3E57B /* AccountConfigStore.swift */,
+				6B6A6A833A382B064D044A76 /* AppDelegate.swift */,
+				0E14D48C275CF5C5738EF12F /* Assets.xcassets */,
+				7196709FA2CA397599C50F9E /* HourlyChartView.swift */,
+				DBCF8803EAFA21DE385B7810 /* Info.plist */,
+				71B97028A2A29CA389E035E9 /* Localization.swift */,
+				0EF86A56075F239EC3D81011 /* MenuBarContentView.swift */,
+				05D2526DE175D1D021E8BDF0 /* SettingsView.swift */,
+				3455EDE6EC662EF30DAA0F7B /* StringExtensions.swift */,
+				772586C3F9F56E837C14D4A6 /* UsageAggregation.swift */,
+				373CAA735B2CA6EFD960B1B2 /* UsageAPIClient.swift */,
+				6578EA9871F4EB31C9DC3268 /* UsageModels.swift */,
+				E7F3B253C9795AEA4427EAAF /* UsageViewModel.swift */,
+				C6B55983D9B6417AC81C5430 /* ZaiUsageMenuBar.entitlements */,
+				D9180429072D92C04B11D639 /* ZaiUsageMenuBarApp.swift */,
+			);
+			path = ZaiUsageMenuBar;
+			sourceTree = "<group>";
+		};
+		256F9F052E493D64A8BED6FF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5DEFAE12BC339A125D047943 /* ZaiUsageMenuBar.app */,
+				F0F7380FC8A5A928C2A0F63F /* ZaiUsageMenuBarTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A020F2222A19CF9794F9EC5 /* ZaiUsageMenuBarTests */ = {
+			isa = PBXGroup;
+			children = (
+				63B1415371CDF1B37906171D /* AccountConfigStoreTests.swift */,
+				41617C080EB0C238B0FAF8A5 /* UsageAggregationTests.swift */,
+				859E149A5304C1C8E1DA0BF8 /* UsageModelsTests.swift */,
+			);
+			path = ZaiUsageMenuBarTests;
+			sourceTree = "<group>";
+		};
+		A57EE939D819DE86BBCC5CB2 = {
+			isa = PBXGroup;
+			children = (
+				23D50946E9B6AD3364D8ACFF /* ZaiUsageMenuBar */,
+				2A020F2222A19CF9794F9EC5 /* ZaiUsageMenuBarTests */,
+				256F9F052E493D64A8BED6FF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9A10033302B55F9EE776E09A /* ZaiUsageMenuBar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3959A9C66106773A7AEEA48 /* Build configuration list for PBXNativeTarget "ZaiUsageMenuBar" */;
+			buildPhases = (
+				4BBE2C4381DCFA00DD55B94B /* Sources */,
+				027D3695C66814891B2B5DA6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ZaiUsageMenuBar;
+			packageProductDependencies = (
+			);
+			productName = ZaiUsageMenuBar;
+			productReference = 5DEFAE12BC339A125D047943 /* ZaiUsageMenuBar.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A2BB4B80A43EE55BFE750FD0 /* ZaiUsageMenuBarTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E311166B94C56171E0915FE2 /* Build configuration list for PBXNativeTarget "ZaiUsageMenuBarTests" */;
+			buildPhases = (
+				724EDD80CB21093FAAA312ED /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				53CE321454B629AD577637EF /* PBXTargetDependency */,
+			);
+			name = ZaiUsageMenuBarTests;
+			packageProductDependencies = (
+			);
+			productName = ZaiUsageMenuBarTests;
+			productReference = F0F7380FC8A5A928C2A0F63F /* ZaiUsageMenuBarTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5421850EE7CA2614B60BA16C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = A84447EB252779761F3B6C8A /* Build configuration list for PBXProject "ZaiUsageMenuBar" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A57EE939D819DE86BBCC5CB2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 54;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A10033302B55F9EE776E09A /* ZaiUsageMenuBar */,
+				A2BB4B80A43EE55BFE750FD0 /* ZaiUsageMenuBarTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		027D3695C66814891B2B5DA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A65EA904B79A2C2F876E4146 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4BBE2C4381DCFA00DD55B94B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC47215743E867E9B46BE1F9 /* AccountConfigStore.swift in Sources */,
+				CA3C8EAC7FDF7B37387B61DB /* AppDelegate.swift in Sources */,
+				2E1FB48E047F6907533A3C1E /* HourlyChartView.swift in Sources */,
+				0FF1B5FAABD21B8B4D17D001 /* Localization.swift in Sources */,
+				214304F125148B59AE787A52 /* MenuBarContentView.swift in Sources */,
+				72BCECE85954DBFAAEFCE997 /* SettingsView.swift in Sources */,
+				93A6BA8912B4EEEA381113C4 /* StringExtensions.swift in Sources */,
+				FC41F930966151D190A2F138 /* UsageAPIClient.swift in Sources */,
+				E1BFD5B964AA1E95450B1C8B /* UsageAggregation.swift in Sources */,
+				925D3D2AB24FAF4A9CB2F46E /* UsageModels.swift in Sources */,
+				5367BAC22FC6343B00884A84 /* UsageViewModel.swift in Sources */,
+				6F51626A4C5DA149971127E7 /* ZaiUsageMenuBarApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		724EDD80CB21093FAAA312ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BFC0C5640F3EFD27F3414BD /* AccountConfigStoreTests.swift in Sources */,
+				8317D1CCF23F1B8461680E5D /* UsageAggregationTests.swift in Sources */,
+				98C1A24BCB60F333A09E1E52 /* UsageModelsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		53CE321454B629AD577637EF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A10033302B55F9EE776E09A /* ZaiUsageMenuBar */;
+			targetProxy = 37F9AEBCE1CAF8AD78DF35A4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		16122DEA14CCF404B895F9C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		45C005DA77F2351D928C187D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		662D7368A5120B393D0D2D44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zai.usage-menubar.tests";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZaiUsageMenuBar.app/Contents/MacOS/ZaiUsageMenuBar";
+			};
+			name = Release;
+		};
+		7D61D2887FC86244075A816E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ZaiUsageMenuBar/ZaiUsageMenuBar.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ZaiUsageMenuBar/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zai.usage-menubar";
+				SDKROOT = macosx;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DC16CAE9A3D1259A1EA95B1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ZaiUsageMenuBar/ZaiUsageMenuBar.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ZaiUsageMenuBar/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zai.usage-menubar";
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EFF5AE74DCCD4645E31154DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zai.usage-menubar.tests";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZaiUsageMenuBar.app/Contents/MacOS/ZaiUsageMenuBar";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A84447EB252779761F3B6C8A /* Build configuration list for PBXProject "ZaiUsageMenuBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16122DEA14CCF404B895F9C3 /* Debug */,
+				45C005DA77F2351D928C187D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B3959A9C66106773A7AEEA48 /* Build configuration list for PBXNativeTarget "ZaiUsageMenuBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7D61D2887FC86244075A816E /* Debug */,
+				DC16CAE9A3D1259A1EA95B1A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E311166B94C56171E0915FE2 /* Build configuration list for PBXNativeTarget "ZaiUsageMenuBarTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EFF5AE74DCCD4645E31154DC /* Debug */,
+				662D7368A5120B393D0D2D44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5421850EE7CA2614B60BA16C /* Project object */;
+}

@@ -1,0 +1,45 @@
+name: ZaiUsageMenuBar
+options:
+  bundleIdPrefix: com.zai
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.0"
+  generateEmptyDirectories: true
+
+targets:
+  ZaiUsageMenuBar:
+    type: application
+    platform: macOS
+    sources:
+      - ZaiUsageMenuBar
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zai.usage-menubar
+        INFOPLIST_FILE: ZaiUsageMenuBar/Info.plist
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        SWIFT_VERSION: "5.0"
+        SWIFT_STRICT_CONCURRENCY: minimal
+        CODE_SIGN_ENTITLEMENTS: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: false
+        ENABLE_PREVIEWS: true
+      configs:
+        release:
+          SWIFT_OPTIMIZATION_LEVEL: "-O"
+    entitlements:
+      path: ZaiUsageMenuBar/ZaiUsageMenuBar.entitlements
+      properties:
+        com.apple.security.app-sandbox: false
+
+  ZaiUsageMenuBarTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - ZaiUsageMenuBarTests
+    dependencies:
+      - target: ZaiUsageMenuBar
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zai.usage-menubar.tests
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: true
