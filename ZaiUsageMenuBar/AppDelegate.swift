@@ -48,10 +48,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateStatusItem(percentage: Double?) {
         guard let button = statusItem.button else { return }
         if let percentage = percentage {
-            button.title = String(format: "%.0f%%", percentage)
+            let text = String(format: "%.0f%%", percentage)
+            button.title = text
+            writeQuotaFile(text)
         } else {
             button.title = "--"
         }
+    }
+
+    private func writeQuotaFile(_ text: String) {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+            .appendingPathComponent("ZaiUsageMenuBar", isDirectory: true)
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let file = dir.appendingPathComponent("quota.txt")
+        try? text.data(using: .utf8)?.write(to: file, options: .atomic)
     }
     
     @objc func statusBarClicked(_ sender: NSStatusBarButton) {
