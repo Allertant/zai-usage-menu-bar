@@ -27,7 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         popover.appearance = NSAppearance(named: .darkAqua)
         popover.contentViewController = NSHostingController(rootView: contentView)
 
-        scheduleNextFetch()
+        fetchAndUpdateStatusItem()
     }
 
     private func adaptiveInterval() -> TimeInterval {
