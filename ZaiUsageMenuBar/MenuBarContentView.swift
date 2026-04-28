@@ -120,15 +120,6 @@ struct HeaderView: View {
             }
             .buttonStyle(.plain)
             .help(L10n.localized("settings"))
-
-            Button {
-                NSApp.terminate(nil)
-            } label: {
-                Image(systemName: "xmark.circle")
-                    .font(.system(size: 12))
-            }
-            .buttonStyle(.plain)
-            .help(L10n.localized("quit"))
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
