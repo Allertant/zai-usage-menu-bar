@@ -77,6 +77,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func showPopover(_ sender: AnyObject?) {
         if let button = statusItem.button {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            popover.contentViewController?.view.window?.makeKey()
+            NSApp.activate(ignoringOtherApps: true)
         }
     }
     
