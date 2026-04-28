@@ -1,5 +1,4 @@
 import Foundation
-import Security
 
 protocol AuthTokenStore {
     func authToken(for accountID: String) -> String?
@@ -10,7 +9,7 @@ protocol AuthTokenStore {
 enum AccountConfigStore {
     static let accountsKey = "accountsV1"
     static let legacyTokenKey = "anthropicAuthToken"
-    private static let tokenStore: AuthTokenStore = KeychainAuthTokenStore()
+    private static let tokenStore: AuthTokenStore = FileAuthTokenStore()
     private static let tokenCacheLock = NSLock()
     private static var tokenCache: [String: TokenCacheEntry] = [:]
     
@@ -156,79 +155,56 @@ private enum TokenCacheEntry {
     }
 }
 
-private struct KeychainAuthTokenStore: AuthTokenStore {
-    private let service = "com.benjamin.zai-usage-menu-bar.auth-token"
-    
-    func authToken(for accountID: String) -> String? {
-        var query = baseQuery(for: accountID)
-        query[kSecReturnData as String] = true
-        query[kSecMatchLimit as String] = kSecMatchLimitOne
+private struct FileAuthTokenStore: AuthTokenStore {
+    private let baseURL: URL = {
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        return appSupport.appendingPathComponent("ZaiUsageMenuBar/tokens", isDirectory: true)
+    }()
 
-        var item: CFTypeRef?
-        let status = SecItemCopyMatching(query as CFDictionary, &item)
-        guard status == errSecSuccess,
-              let data = item as? Data,
+    private func tokenURL(for accountID: String) -> URL {
+        baseURL.appendingPathComponent(accountID)
+    }
+
+    private func ensureDirectory() throws {
+        try FileManager.default.createDirectory(at: baseURL, withIntermediateDirectories: true)
+        try FileManager.default.setAttributes([.posixPermissions: 0o700], ofItemAtPath: baseURL.path)
+    }
+
+    func authToken(for accountID: String) -> String? {
+        let url = tokenURL(for: accountID)
+        guard let data = FileManager.default.contents(atPath: url.path),
               let token = String(data: data, encoding: .utf8)
         else {
             return nil
         }
-
         return token
     }
 
     func setAuthToken(_ token: String, for accountID: String) throws {
-        let data = Data(token.utf8)
-        let query = baseQuery(for: accountID)
-        let attributes: [String: Any] = [
-            kSecValueData as String: data,
-            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
-        ]
-        let updateStatus = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
-
-        if updateStatus == errSecSuccess {
-            return
-        }
-
-        if updateStatus == errSecItemNotFound {
-            var item: [String: Any] = baseQuery(for: accountID)
-            item[kSecValueData as String] = data
-            item[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-            let addStatus = SecItemAdd(item as CFDictionary, nil)
-            guard addStatus == errSecSuccess else {
-                throw AccountConfigStoreError.keychainError(status: addStatus)
-            }
-            return
-        }
-
-        throw AccountConfigStoreError.keychainError(status: updateStatus)
+        try ensureDirectory()
+        let url = tokenURL(for: accountID)
+        try token.data(using: .utf8)!.write(to: url, options: .atomic)
+        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: url.path)
     }
-    
+
     func removeAuthToken(for accountID: String) throws {
-        let status = SecItemDelete(baseQuery(for: accountID) as CFDictionary)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw AccountConfigStoreError.keychainError(status: status)
+        let url = tokenURL(for: accountID)
+        if FileManager.default.fileExists(atPath: url.path) {
+            try FileManager.default.removeItem(at: url)
         }
-    }
-    
-    private func baseQuery(for accountID: String) -> [String: Any] {
-        [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrService as String: service,
-            kSecAttrAccount as String: accountID,
-        ]
     }
 }
 
 enum AccountConfigStoreError: LocalizedError {
-    case keychainError(status: OSStatus)
+    case writeFailed(path: String)
+    case readFailed(path: String)
 
     var errorDescription: String? {
         switch self {
-        case .keychainError(let status):
-            if let message = SecCopyErrorMessageString(status, nil) as String? {
-                return message
-            }
-            return "Keychain error (\(status))."
+        case .writeFailed(let path):
+            return "Failed to write token to \(path)"
+        case .readFailed(let path):
+            return "Failed to read token from \(path)"
         }
     }
 }
