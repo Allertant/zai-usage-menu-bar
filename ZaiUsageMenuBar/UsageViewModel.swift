@@ -36,8 +36,15 @@ class UsageViewModel: ObservableObject {
                 AppDelegate.shared?.updateStatusItem(percentage: nil)
             } else {
                 self.error = nil
+                let usedPct = UsageAggregation.tokenPercentage(from: firstSuccessfulUsage?.usage?.quotaLimits)
+                let restPct = usedPct.map { 100 - $0 }
+                let modelUsage = firstSuccessfulUsage?.usage?.modelUsage
+                let todayTokens = modelUsage.flatMap { stats in
+                    RangeStats.from(modelData: stats, range: .today(referenceDate: Date())).tokens
+                }
                 AppDelegate.shared?.updateStatusItem(
-                    percentage: UsageAggregation.tokenPercentage(from: firstSuccessfulUsage?.usage?.quotaLimits)
+                    percentage: restPct,
+                    todayTokens: todayTokens
                 )
             }
 

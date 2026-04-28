@@ -57,33 +57,49 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         Task { @MainActor in
             let results = await UsageAPIClient.shared.fetchAllUsage(accounts: enabledAccounts)
             let first = results.first { $0.usage != nil }
-            let percentage = UsageAggregation.tokenPercentage(from: first?.usage?.quotaLimits)
-            if percentage != lastPercentage {
+            let usedPct = UsageAggregation.tokenPercentage(from: first?.usage?.quotaLimits)
+            let restPct = usedPct.map { 100 - $0 }
+            let todayTokens = Self.todayTokens(from: first?.usage?.modelUsage)
+            if restPct != lastPercentage {
                 lastChangeTime = .now
-                lastPercentage = percentage
+                lastPercentage = restPct
             }
-            updateStatusItem(percentage: percentage)
+            updateStatusItem(percentage: restPct, todayTokens: todayTokens)
             scheduleNextFetch()
         }
     }
-    
-    func updateStatusItem(percentage: Double?) {
+
+    private static func todayTokens(from modelUsage: ModelUsageData?) -> Int? {
+        guard let modelUsage else { return nil }
+        let stats = RangeStats.from(modelData: modelUsage, range: .today(referenceDate: Date()))
+        return stats.tokens
+    }
+
+    func updateStatusItem(percentage: Double?, todayTokens: Int? = nil) {
         guard let button = statusItem.button else { return }
         if let percentage = percentage {
             let text = String(format: "%.0f%%", percentage)
             button.title = text
-            writeQuotaFile(text)
+            writeQuotaFile(restPct: percentage, todayTokens: todayTokens)
         } else {
             button.title = "--"
         }
     }
 
-    private func writeQuotaFile(_ text: String) {
+    private func writeQuotaFile(restPct: Double, todayTokens: Int?) {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
             .appendingPathComponent("ZaiUsageMenuBar", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let tokensStr = todayTokens.map { formatTokenCount($0) } ?? "--"
+        let line = String(format: "%.0f%%, %@", restPct, tokensStr)
         let file = dir.appendingPathComponent("quota.txt")
-        try? text.data(using: .utf8)?.write(to: file, options: .atomic)
+        try? line.data(using: .utf8)?.write(to: file, options: .atomic)
+    }
+
+    private func formatTokenCount(_ count: Int) -> String {
+        if count >= 1_000_000 { return String(format: "%.1fM", Double(count) / 1_000_000) }
+        if count >= 1_000 { return String(format: "%.1fK", Double(count) / 1_000) }
+        return "\(count)"
     }
     
     @objc func statusBarClicked(_ sender: NSStatusBarButton) {
