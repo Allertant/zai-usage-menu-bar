@@ -9,6 +9,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var lastPercentage: Double?
     private var lastChangeTime: Date = .now
     private var fetchTask: DispatchWorkItem?
+    private var eventMonitor: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppDelegate.shared = self
@@ -144,10 +145,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             popover.contentViewController?.view.window?.makeKey()
             NSApp.activate(ignoringOtherApps: true)
+            installEventMonitor()
         }
     }
-    
+
+    private func installEventMonitor() {
+        eventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] event in
+            guard let self, self.popover.isShown else { return }
+            let click = NSEvent.mouseLocation
+
+            if let buttonFrame = self.statusItem.button?.window?.convertToScreen(self.statusItem.button?.frame ?? .zero) {
+                if buttonFrame.contains(click) { return }
+            }
+            if let popoverFrame = self.popover.contentViewController?.view.window?.frame {
+                if popoverFrame.contains(click) { return }
+            }
+
+            self.hidePopover(nil)
+        }
+    }
+
+    private func removeEventMonitor() {
+        if let monitor = eventMonitor {
+            NSEvent.removeMonitor(monitor)
+            eventMonitor = nil
+        }
+    }
+
     func hidePopover(_ sender: AnyObject?) {
+        removeEventMonitor()
         popover.performClose(sender)
     }
 }
