@@ -3,45 +3,67 @@ import AppKit
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     static var shared: AppDelegate?
-    
+
     var statusItem: NSStatusItem!
     var popover = NSPopover()
-    var refreshTimer: Timer?
-    
+    private var lastPercentage: Double?
+    private var lastChangeTime: Date = .now
+    private var fetchTask: DispatchWorkItem?
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppDelegate.shared = self
-        
+
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        
+
         if let button = statusItem.button {
             button.title = "--"
             button.action = #selector(statusBarClicked(_:))
             button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
-        
+
         let contentView = MenuBarContentView().preferredColorScheme(.dark)
         popover.contentSize = NSSize(width: 300, height: 360)
         popover.behavior = .transient
         popover.appearance = NSAppearance(named: .darkAqua)
         popover.contentViewController = NSHostingController(rootView: contentView)
-        
-        refreshTimer = Timer(timeInterval: 300, repeats: true) { _ in
-            NotificationCenter.default.post(name: .refreshUsage, object: nil)
-        }
-        RunLoop.main.add(refreshTimer!, forMode: .common)
 
-        fetchAndUpdateStatusItem()
+        scheduleNextFetch()
+    }
+
+    private func adaptiveInterval() -> TimeInterval {
+        let idle = Date.now.timeIntervalSince(lastChangeTime)
+        if idle < 600 { return 30 }    // 10min 内活跃 → 30s
+        if idle < 1800 { return 60 }   // 10~30min 空闲 → 1min
+        return 300                       // >30min 长时间空闲 → 5min
+    }
+
+    private func scheduleNextFetch() {
+        fetchTask?.cancel()
+        let task = DispatchWorkItem { [weak self] in
+            self?.fetchAndUpdateStatusItem()
+        }
+        fetchTask = task
+        DispatchQueue.main.asyncAfter(deadline: .now() + adaptiveInterval(), execute: task)
     }
 
     private func fetchAndUpdateStatusItem() {
         let accounts = AccountConfigStore.loadAccounts()
         let enabledAccounts = accounts.filter { $0.isEnabled && !$0.authToken.trimmed.isEmpty }
-        guard !enabledAccounts.isEmpty else { return }
+        guard !enabledAccounts.isEmpty else {
+            scheduleNextFetch()
+            return
+        }
 
         Task { @MainActor in
             let results = await UsageAPIClient.shared.fetchAllUsage(accounts: enabledAccounts)
             let first = results.first { $0.usage != nil }
-            updateStatusItem(percentage: UsageAggregation.tokenPercentage(from: first?.usage?.quotaLimits))
+            let percentage = UsageAggregation.tokenPercentage(from: first?.usage?.quotaLimits)
+            if percentage != lastPercentage {
+                lastChangeTime = .now
+                lastPercentage = percentage
+            }
+            updateStatusItem(percentage: percentage)
+            scheduleNextFetch()
         }
     }
     
