@@ -24,11 +24,7 @@ targets:
         GENERATE_INFOPLIST_FILE: false
         ENABLE_PREVIEWS: true
       configs:
-        debug:
-          CODE_SIGN_IDENTITY: "ZaiUsageMenuBar Local Dev"
-          CODE_SIGN_STYLE: Manual
         release:
-          CODE_SIGN_STYLE: Automatic
           SWIFT_OPTIMIZATION_LEVEL: "-O"
     entitlements:
       path: ZaiUsageMenuBar/ZaiUsageMenuBar.entitlements
