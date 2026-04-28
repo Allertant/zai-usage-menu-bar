@@ -60,11 +60,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let usedPct = UsageAggregation.tokenPercentage(from: first?.usage?.quotaLimits)
             let restPct = usedPct.map { 100 - $0 }
             let todayTokens = Self.todayTokens(from: first?.usage?.modelUsage)
+            let resetTime = Self.fiveHourResetTime(from: first?.usage?.quotaLimits)
             if restPct != lastPercentage {
                 lastChangeTime = .now
                 lastPercentage = restPct
             }
-            updateStatusItem(percentage: restPct, todayTokens: todayTokens)
+            updateStatusItem(percentage: restPct, todayTokens: todayTokens, resetTime: resetTime)
             scheduleNextFetch()
         }
     }
@@ -75,23 +76,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return stats.tokens
     }
 
-    func updateStatusItem(percentage: Double?, todayTokens: Int? = nil) {
+    private static func fiveHourResetTime(from quotaLimits: QuotaLimitData?) -> String? {
+        let limit5h = quotaLimits?.limits?.first { $0.type == "TOKENS_LIMIT" && $0.unit != 6 }
+        guard let ts = limit5h?.nextResetTime, ts > 0 else { return nil }
+        let date = Date(timeIntervalSince1970: ts)
+        let fmt = DateFormatter()
+        fmt.dateFormat = "HH:mm"
+        return fmt.string(from: date)
+    }
+
+    func updateStatusItem(percentage: Double?, todayTokens: Int? = nil, resetTime: String? = nil) {
         guard let button = statusItem.button else { return }
         if let percentage = percentage {
             let text = String(format: "G%.0f%%", percentage)
             button.title = text
-            writeQuotaFile(restPct: percentage, todayTokens: todayTokens)
+            writeQuotaFile(restPct: percentage, todayTokens: todayTokens, resetTime: resetTime)
         } else {
             button.title = "--"
         }
     }
 
-    private func writeQuotaFile(restPct: Double, todayTokens: Int?) {
+    private func writeQuotaFile(restPct: Double, todayTokens: Int?, resetTime: String?) {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
             .appendingPathComponent("ZaiUsageMenuBar", isDirectory: true)
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         let tokensStr = todayTokens.map { formatTokenCount($0) } ?? "--"
-        let line = String(format: "%.0f%%, %@", restPct, tokensStr)
+        let resetStr = resetTime ?? "--"
+        let line = String(format: "%.0f%%, %@, %@", restPct, tokensStr, resetStr)
         let file = dir.appendingPathComponent("quota.txt")
         try? line.data(using: .utf8)?.write(to: file, options: .atomic)
     }
