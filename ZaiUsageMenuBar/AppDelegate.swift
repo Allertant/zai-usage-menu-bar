@@ -79,7 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private static func fiveHourResetTime(from quotaLimits: QuotaLimitData?) -> String? {
         let limit5h = quotaLimits?.limits?.first { $0.type == "TOKENS_LIMIT" && $0.unit != 6 }
         guard let ts = limit5h?.nextResetTime, ts > 0 else { return nil }
-        let date = Date(timeIntervalSince1970: ts)
+        let date = Date(timeIntervalSince1970: ts / 1000)
         let fmt = DateFormatter()
         fmt.dateFormat = "HH:mm"
         return fmt.string(from: date)
