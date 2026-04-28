@@ -225,9 +225,10 @@ struct AccountSectionView: View {
                     Spacer()
 
                     if let pct = ringPercentageValue {
+                        let restPct = 100 - pct
                         TokenRingView(
-                            percentage: pct,
-                            color: progressColor(for: pct, accountAccent: accentColor),
+                            percentage: restPct,
+                            color: progressColor(for: restPct, accountAccent: accentColor),
                             size: 24
                         )
                     }
@@ -314,22 +315,24 @@ private struct QuotaBarRow: View {
     }
 
     var body: some View {
-        let color = progressColor(for: limit.percentage, accountAccent: accentColor)
+        let usedPct = limit.percentage ?? 0
+        let restPct = 100 - usedPct
+        let color = progressColor(for: restPct, accountAccent: accentColor)
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
                     .font(.system(size: 10))
                     .foregroundColor(.secondary)
                 Spacer()
-                if let current = limit.currentValue, let usage = limit.usage {
-                    Text(String(format: "%.0f/%.0f", current, usage))
+                if let remaining = limit.remaining, let usage = limit.usage {
+                    Text(String(format: "%.0f/%.0f", remaining, usage))
                         .font(.system(size: 10))
                         .foregroundColor(.secondary)
                 }
             }
 
-            if let pct = limit.percentage {
-                ProgressView(value: min(pct, 100), total: 100)
+            if limit.percentage != nil {
+                ProgressView(value: min(restPct, 100), total: 100)
                     .progressViewStyle(LinearProgressViewStyle(tint: color))
                     .frame(height: 3)
             }
@@ -447,8 +450,8 @@ func accountColor(for index: Int) -> Color {
 
 func progressColor(for percentage: Double?, accountAccent: Color) -> Color {
     guard let percentage else { return accountAccent }
-    if percentage >= 90 { return Color(red: 255/255, green: 69/255, blue: 58/255) }
-    if percentage >= 70 { return Color(red: 255/255, green: 159/255, blue: 10/255) }
+    if percentage <= 10 { return Color(red: 255/255, green: 69/255, blue: 58/255) }
+    if percentage <= 30 { return Color(red: 255/255, green: 159/255, blue: 10/255) }
     return accountAccent
 }
 
