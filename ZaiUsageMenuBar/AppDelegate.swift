@@ -78,7 +78,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func updateStatusItem(percentage: Double?, todayTokens: Int? = nil) {
         guard let button = statusItem.button else { return }
         if let percentage = percentage {
-            let text = String(format: "%.0f%%", percentage)
+            let text = String(format: "G%.0f%%", percentage)
             button.title = text
             writeQuotaFile(restPct: percentage, todayTokens: todayTokens)
         } else {
@@ -101,7 +101,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if count >= 1_000 { return String(format: "%.1fK", Double(count) / 1_000) }
         return "\(count)"
     }
-    
+
+    func applicationWillTerminate(_ notification: Notification) {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+            .appendingPathComponent("ZaiUsageMenuBar/quota.txt", isDirectory: false)
+        try? FileManager.default.removeItem(at: dir)
+    }
+
     @objc func statusBarClicked(_ sender: NSStatusBarButton) {
         guard let event = NSApp.currentEvent else { return }
 
